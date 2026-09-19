@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Account Showcase</title>
+<style>
+:root {
+  --bg: #0a0a0a;
+  --bg2: #150808;
+  --card: #160a0a;
+  --border: #3a1416;
+  --accent: #ff4655;
+  --text: #f5eaea;
+  --muted: #8a6b6d;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(1200px 600px at 50% -10%, var(--bg2), var(--bg));
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  padding: 32px 16px 48px;
+}
+header {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto 32px;
+}
+header h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  letter-spacing: 1px;
+  margin: 0;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #ff4655, #ff8a8a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.gallery {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+@media (max-width: 720px) {
+  .gallery { grid-template-columns: 1fr; }
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+}
+.card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: zoom-in;
+}
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(4,10,16,0.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 24px;
+}
+.lightbox.open { display: flex; }
+.lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 10px;
+  box-shadow: 0 0 60px rgba(0,0,0,0.6);
+}
+.lightbox .close {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  color: var(--text);
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.empty-msg {
+  text-align: center;
+  color: var(--muted);
+  margin-top: 40px;
+}
+</style>
+</head>
+<body>
+
+<!--
+  HOW TO USE
+  ==========
+  1. Put this account's screenshots in the "images" folder next to this file.
+     Any number of images works — 1, 2, 5, 10, doesn't matter.
+  2. Change the ACCOUNT NAME below.
+  3. Scroll down to the IMAGE LIST in the <script> tag and list your
+     actual filenames there, one per line, in the order you want them shown.
+  4. To make a NEW account page: copy this whole folder, rename it,
+     swap the images, update the name and the list.
+-->
+
+<header>
+  <h1>ACCOUNT NAME HERE</h1>
+</header>
+
+<div class="gallery" id="gallery"></div>
+<p class="empty-msg" id="empty-msg" style="display:none;">No images added yet.</p>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="close" onclick="closeLightbox(event)">&times;</button>
+  <img id="lightbox-img" src="">
+</div>
+
+<script>
+// ===== IMAGE LIST =====
+// Add or remove filenames here — as many or as few as you want.
+// These must match the actual file names inside the "images" folder.
+const images = [
+  "images/1.jpg",
+  "images/2.jpg",
+  // "images/3.jpg",
+  // "images/4.jpg",
+];
+// =======================
+
+const gallery = document.getElementById('gallery');
+if (images.length === 0) {
+  document.getElementById('empty-msg').style.display = 'block';
+} else {
+  images.forEach(src => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = 'screenshot';
+    img.onclick = () => openLightbox(img.src);
+    card.appendChild(img);
+    gallery.appendChild(card);
+  });
+}
+
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(e) {
+  document.getElementById('lightbox').classList.remove('open');
+}
+</script>
+
+</body>
+</html>
